@@ -1,16 +1,5 @@
-import pygame;from Spritesheet_class import sprite
+import pygame
 pygame.init()
-#Variable
-##Display
-Display_W,Display_H=500,300#Function for deleting textbox, button, and option specifically requires the display width and height to be named Display_W and Display_H
-White=(255,255,255)
-Blue=(0,0,255)
-Black=(0,0,0)
-Yellow=(255,255,0)
-window=pygame.display.set_mode((Display_W,Display_H),0,32)
-##Sprites
-Sprite=sprite('Bush.png')
-bush=[Sprite.parse_sprite('Bush0.png'),Sprite.parse_sprite('Bush1.png'),Sprite.parse_sprite('Bush2.png'),Sprite.parse_sprite('Bush3.png')]
 #Classes
 class textbox():
     def __init__(self,window,name,text,text_color,box_color,box_x,box_y,width,height,name_x,name_y,text_x,text_y):
@@ -84,23 +73,3 @@ class option():
     def delete_option(self):
         #Empties text and use button.delete_button()
         self.update_option();self.option_button.delete_button()
-#Events
-def event():
-    window.blit(bush[0],(100,150))
-    a.draw()
-    if c.option_button.draw():
-        a.update_textbox('Good','Bush')
-        c.delete_option()
-    c.draw_text()   
-#Loop
-run=True
-a=textbox(window,'Bush','Hi! How are You doing? Are you okay?',Black,Yellow,15,220,460,78,30,220,30,250)
-c=option(window,'Yes',Black,225,50)
-while run:
-    for events in pygame.event.get():
-        if events.type==pygame.QUIT:
-            run=False
-    window.fill(Blue)
-    event()
-    pygame.display.update()
-pygame.quit()
