@@ -110,7 +110,7 @@ advance_button=pygame key event to advance the dialogue
                         play_sfx(default_sfx)
         if isinstance(background,str) or isinstance(background,tuple):
             window.fill(background)
-        else:
+        elif background!=None:
             window.blit(background,(0,0))
         if len(image)>0:
             if len(image[count])==3:
