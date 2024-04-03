@@ -1,4 +1,6 @@
-import pygame
+import pygame,sys
+from Audio import play_sfx
+from Button import button
 pygame.init()
 #Classes
 class textbox():
@@ -54,3 +56,75 @@ textfontsize=font size of the text'''
         #Display Name and Text
         Name_display=self.surface.blit(Namerender,(self.name_x,self.name_y))
         Text_display=self.surface.blit(Textrender,(self.text_x,self.text_y))
+    #Functions
+def speech(window,name:list,namefontsize:int,text:list,textfontsize:int,text_color:str,box_color:str,box_x:int,box_y:int,width:int,height:int,name_x:int,name_y:int,text_x:int,text_y:int,image:list=[],background=None,
+           sound:list=[],default_sfx=None,advance_button=pygame.K_e):
+    '''Create dialogue loop
+window=pygame.display variable
+name=list indicating order in which character speaks
+namefontsize=font size of the name
+text=list indicating order in which line is shown
+textfontsize=font size of the text
+text_color=color of the text
+box_color=color of the textbox
+box_x=x coordinate of textbox
+box_y=y coordinate of textbox
+width=width of textbox
+height=height of textbox
+name_x=x coordinate of name
+name_y=y coordinate of name
+text_x=x coordinate of text
+text_y=y coordinate of text
+image=list of character portraits in order they should display
+-format:[(image,x,y),(imagen,xn,yn)]
+sound=list of sound effects to play in stated order
+-''=play nothing (assuming default_sfx=None)
+default_sfx=sfx that one wishes to play by default
+background=background image
+advance_button=pygame key event to advance the dialogue
+'''
+    count=0
+    a=textbox(window,name[count],text[count],text_color,box_color,box_x,box_y,width,height,name_x,name_y,text_x,text_y)
+    b=button(window,'yellow',1300,20,150,100,'Skip','black')
+    run=True
+    def end():
+        nonlocal run
+        run=False
+    while run:
+        for events in pygame.event.get():
+            if events.type==pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif events.type==pygame.KEYDOWN:
+                if events.key==advance_button:
+                    count+=1
+                    if count>=len(name) or count>=len(text):
+                        count-=1
+                        run=False
+                    if count<=len(sound) and sound!=[]:
+                        if sound[count]!='':
+                            play_sfx(sound[count])
+                        elif sound[count]=='' and default_sfx!=None:
+                            play_sfx(default_sfx)
+                    elif sound==[] and default_sfx!=None:
+                        play_sfx(default_sfx)
+        if isinstance(background,str) or isinstance(background,tuple):
+            window.fill(background)
+        else:
+            window.blit(background,(0,0))
+        if len(image)>0:
+            if len(image[count])==3:
+               x=image[count][1]
+               y=image[count][2]
+               pic=image[count][0]
+            elif image[count]==[]:
+               x=window.get_width()
+               y=window.get_height()
+               pic=pygame.Surface((0,0))
+            window.blit(pic,(x,y))
+        a.draw(namefontsize,textfontsize)
+        b.draw(end)
+        pygame.display.update()
+        a.name=name[count]
+        a.text=text[count]
+if __name__=='__main__':pass
