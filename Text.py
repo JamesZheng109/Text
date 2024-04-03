@@ -2,74 +2,55 @@ import pygame
 pygame.init()
 #Classes
 class textbox():
-    def __init__(self,window,name,text,text_color,box_color,box_x,box_y,width,height,name_x,name_y,text_x,text_y):
+    def __init__(self,window,name:str,text:str,text_color:str,box_color:str,box_x:int,box_y:int,width:int,height:int,name_x:int,name_y:int,text_x:int,text_y:int):
+        '''Make a textbox using Rect and Sysfont
+window=pass varibale used to make pygame window
+name=Name of the person who is speaking
+text=text for the texbox
+text_color=color the text variable will display as
+box_color=color the texbox will be
+box_x=x location the textbox will be placed
+box_y=y location the textbox will be placed
+width=How wide the texbox will be
+height=How high the texbox will be
+name_x=x location the name variable will be placed
+name_y=y location the name variable will be placed
+text_x=x location the text variable will be placed
+text_y=y location the text variable will be placed'''
         #Variables
         self.window=window
         ##Name,Text, and Text_color
-        self.name,self.text,self.text_color=name,text,text_color
+        self.name=name
+        self.text=text
+        self.text_color=text_color
         ##Textbox's x, y, and color
-        self.box_x,self.box_y,self.box_color=box_x,box_y,box_color
+        self.box_x=box_x
+        self.box_y=box_y
+        self.box_color=box_color
         ##Textbox's width and height
-        self.width,self.height=width,height
+        self.width=width
+        self.height=height
         ##Name's x and y
-        self.name_x,self.name_y=name_x,name_y
+        self.name_x=name_x
+        self.name_y=name_y
         ##Text's x and y
-        self.text_x,self.text_y=text_x,text_y
-    def draw(self):
+        self.text_x=text_x
+        self.text_y=text_y
+        self.surface=pygame.Surface((self.width,self.height),pygame.SRCALPHA)
+def draw(self,namefontsize:int,textfontsize:int):
+        '''Draws textbox instance onto window
+namefontsize=font size of the name
+textfontsize=font size of the text'''
         #Speaker's name info
-        Namefont=pygame.font.SysFont('timesnewroman',25);Namerender=Namefont.render(self.name,False,self.text_color)
+        Namefont=pygame.font.SysFont('timesnewroman',namefontsize)
+        Namerender=Namefont.render(self.name,False,self.text_color)
         #Text info
-        Textfont=pygame.font.SysFont('timesnewroman',25);Textrender=Textfont.render(self.text,False,self.text_color)
+        Textfont=pygame.font.SysFont('timesnewroman',textfontsize)
+        Textrender=Textfont.render(self.text,False,self.text_color)
         #Backgroundbox info and display it
-        Backgroundbox=pygame.Rect((self.box_x,self.box_y),(self.width,self.height));Backgroundbox_display=pygame.draw.rect(self.window,(self.box_color),Backgroundbox)
+        Backgroundbox=pygame.Rect((0,0),(self.width,self.height))
+        self.window.blit(self.surface,(self.box_x,self.box_y))
+        Backgroundbox_display=pygame.draw.rect(self.surface,(self.box_color),Backgroundbox)
         #Display Name and Text
-        Name_display,Text_display=self.window.blit(Namerender,(self.name_x,self.name_y)),self.window.blit(Textrender,(self.text_x,self.text_y))
-    def update_textbox(self,message='',new_name=''):
-        #Changing text and name variables
-        self.text,self.name=message,new_name
-    def delete_textbox(self,Display_W,Display_H):
-        #Empties text
-        self.update_textbox()
-        self.x,self.y=Display_W+1,Display_H+1
-        self.width,self.height=0,0
-class button():
-    def __init__ (self,window,box_color,x,y,width,height):
-        #Variables
-        self.window=window
-        ##Button info
-        self.x,self.y,self.box_color,self.width,self.height=x,y,box_color,width,height
-        self.clicked=False
-    def draw(self):
-        #Variables
-        act=False
-        ##Button info
-        Box=pygame.Rect((self.x,self.y),(self.width,self.height))
-        ##Button display
-        Box_display=pygame.draw.rect(self.window,(self.box_color),Box)
-        #Mouse detection
-        if Box_display.collidepoint(pygame.mouse.get_pos()):
-            if pygame.mouse.get_pressed()[0]==1 and self.clicked==False:self.clicked=True;act=True
-        if pygame.mouse.get_pressed()[0]==0:self.clicked=False
-        return act
-    def delete_button(self,Display_W,Display_H):
-        #Move and shrink button and moves it elsewhere
-        self.x,self.y,self.width,self.height=Display_W+1,Display_H+1,0,0
-class option():
-    def __init__(self,window,optiontext,text_color,x,y):
-        #Variables
-        self.window=window
-        ##Option Info
-        self.optiontext,self.text_color,self.x,self.y=optiontext,text_color,x,y
-        ##Option button
-        self.option_button=button(self.window,White,150,40,200,50)
-    def draw_text(self):
-        #Text option info
-        Optionfont=pygame.font.SysFont('timesnewroman',25);Optionrender=Optionfont.render(self.optiontext,True,self.text_color)
-        #Text option display
-        Option_display=self.window.blit(Optionrender,(self.x,self.y))
-    def update_option(self,new_option=''):
-        #Change option text
-        self.optiontext=new_option
-    def delete_option(self,Display_W,Display_H):
-        #Empties text and use button.delete_button()
-        self.update_option();self.option_button.delete_button(Display_W,Display_H)
+        Name_display=self.surface.blit(Namerender,(self.name_x,self.name_y))
+        Text_display=self.surface.blit(Textrender,(self.text_x,self.text_y))
