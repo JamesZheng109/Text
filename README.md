@@ -1,3 +1,5 @@
+# License
+The scripts are under the MIT License.
 # Text.py
 Creates a textbox with both dialouge to be displayed and name to indicate who is speaking (No images, only solid colors, and execulsively uses timesnewroman font)
 ### Parameters for initalization textbox()
