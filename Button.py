@@ -1,19 +1,24 @@
 #Imports
-import pygame
+import pygame,sys
+from Scripts.Audio import play_sfx
 pygame.init()
 class button():
-    def __init__ (self,window,box_color,x:int,y:int,width:int,height:int,text:str,text_color):
+    def __init__ (self,window,x:int,y:int,width:int,height:int,box_color=None,text:str=None,text_color='black',image=None,audio=None,alpha=255,hover=None):
         '''Make a button using Rect
 window=pass variable used to make pygame window
-box_color=color the button will be
 x=x location the button will be placed
 y=y location the button will be placed
 width=How wide the texbox will be
 height=How high the texbox will be
+box_color=color the button will be
 text=Words to display on button
-text_color=color text will be'''
+text_color=color text will be
+image=display image on surface
+hover=If mouse hover, draw rect
+-format:(color,thickness)'''
         #Variables
         self.window=window
+        self.audio=audio
         ##Button info
         self.x=x
         self.y=y
@@ -25,21 +30,38 @@ text_color=color text will be'''
         self.text_color=text_color
         self.textfont=pygame.font.SysFont('timesnewroman',50)
         self.textrender=self.textfont.render(self.text,False,self.text_color)
+        if image!=None:
+            self.image=pygame.transform.scale(image,(self.width,self.height))
+        elif image==None:
+            self.image=None
         #Surface
-        self.surface=pygame.Surface((self.width,self.height),pygame.SRCALPHA) 
-    def draw(self,act):
+        self.surface=pygame.Surface((self.width,self.height),pygame.SRCALPHA)
+        self.surface.set_alpha(alpha)
+        self.Box=pygame.Rect(0,0,self.width,self.height)
+        self.hover=hover
+    def draw(self,act=None):
         '''Draws button instance onto window'''
         self.window.blit(self.surface,(self.x,self.y))
         ##Button info
-        Box=pygame.Rect((0,0),(self.width,self.height))
-        ##Button display
-        Box_display=pygame.draw.rect(self.surface,(self.box_color),Box)
+        if self.box_color!=None:
+            ##Button display
+            pygame.draw.rect(self.surface,(self.box_color),self.Box)
+        elif self.image!=None:
+            self.surface.blit(self.image,(0,0))
         ##Display Text
-        self.surface.blit(self.textrender,(int(self.width/2)-int(self.textrender.get_width()/2),int(self.height/2)-int(self.textrender.get_height()/2)))
+        if self.text!=None:
+            self.surface.blit(self.textrender,(int(self.width/2)-int(self.textrender.get_width()/2),int(self.height/2)-int(self.textrender.get_height()/2)))
         #Mouse detection
-        if Box_display.collidepoint((pygame.mouse.get_pos()[0]-self.x,pygame.mouse.get_pos()[1]-self.y)):
+        if self.Box.collidepoint((pygame.mouse.get_pos()[0]-self.x,pygame.mouse.get_pos()[1]-self.y)):
+            if self.hover!=None:
+                pygame.draw.rect(self.window,self.hover[0],(self.x,self.y,self.Box.width,self.Box.height),self.hover[1])
             if pygame.mouse.get_pressed()[0]==1 and self.clicked==False:
-                self.clicked=True;act()
+                self.clicked=True
+                if self.audio!=None:
+                    play_sfx(self.audio)
+                if act!=None:
+                    pygame.event.clear()
+                    act()
             else:
                 self.clicked=False
     def delete_button(self,Display_W,Display_H):
