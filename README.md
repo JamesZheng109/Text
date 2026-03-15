@@ -17,6 +17,7 @@ Creates a textbox with both dialouge to be displayed and name to indicate who is
 - name_y=y location the name variable will be placed
 - text_x=x location the text variable will be placed
 - text_y=y location the text variable will be placed
+- box_image=pygame.image that will be used for the textbox
 ### Parameters for textbox.draw()
 - namefontsize=font size of the name
 - textfontsize=font size of the text
@@ -34,6 +35,7 @@ This function takes the parameters of textbox.__init__() and texbox.draw() and p
       1. The last frame before function is called will still be there
       2. If one provides a list of images, the last image won't go away when the next one is called
 - advance_button=pygame key event to advance the dialogue
+- button_image=pygame.image that will be passed to button's image parameter
 # Wrapper.py
 This take speech() from Text.py and wraps around it. This exists so you don't have to worry about inconsistencies with textbox design. You will need to fill in some paramters
 ### Parameters that need to be filled in
