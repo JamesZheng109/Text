@@ -58,6 +58,9 @@ Creates a general button (No images, only solid colors.)
 - height=How high the texbox will be
 - text=Words to display on button
 - text_color=color text will be
+- image=display image on surface
+- hover=If mouse hover, draw rect
+  - format:(color,thickness)
 # Audio.py
 Handles playing sfx and music, and stopping music from playing
 ## play_sfx()
