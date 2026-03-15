@@ -64,14 +64,17 @@ Handles playing sfx and music, and stopping music from playing
 Plays the provided sfx file
 ### Paramters
 - sound=sound file
-## play_song()
+- length=How many times sfx will be played
+- volume=Set volume of sfx
+## play_music()
 Plays the provided song file
 ### Parameters
 - song=song file
+- - volume=Set volume of music
 ## pause_music()
-Pauses, stops, or unpauses currently playing song based on provided state
+Pauses, stops, or unloads currently playing song based on provided state
 ### Paramters
 -state=determines whether to unpause, pause, or stop music
   - 0=pause
   - 1=unpause
-  - 2=stop
+  - 2=unload
