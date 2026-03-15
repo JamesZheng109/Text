@@ -1,12 +1,18 @@
 import pygame
 pygame.init()
-def play_sfx(sound):
-    '''play sfx'''
+def play_sfx(sound,length=0,volume=None):
+    '''play sfx
+lenght=How many times sfx will be played
+'''
     noise=pygame.mixer.Sound(sound)
-    noise.play(0)
-def play_music(song):
+    noise.play(length)
+    if volume!=None:
+        noise.set_volume(volume)
+    return noise
+def play_music(song,volume=1):
     '''play song'''
-    song=pygame.mixer.music.load(song)
+    pygame.mixer.music.load(song)
+    pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play(-1)
 def pause_music(state:0):
     '''pauses and unpauses based on state'''
@@ -15,6 +21,4 @@ def pause_music(state:0):
     elif state==1:
         pygame.mixer.music.unpause()
     elif state==2:
-        pygame.mixer.stop()
-if __name__=='__main__':
-    pass
+        pygame.mixer.music.unload()
